@@ -15,12 +15,12 @@ export const sidebarLinks: SidebarNavItem[] = [
   {
     title: "SETUP",
     items: [
-      // {
-      //   href: "/users",
-      //   icon: "user",
-      //   title: "Users",
-      //   authorizeOnly: UserRole.ADMIN,
-      // },
+      {
+        href: "/users",
+        icon: "user",
+        title: "Users",
+        authorizeOnly: UserRole.ADMIN,
+      },
       { href: "/settings", icon: "settings", title: "Settings" },
     ],
   },

@@ -12,8 +12,8 @@ datasource db {
 
 enum UserRole {
   ADMIN
-  MANAGER
-  USER
+  STAFF
+  STUDENT
 }
 
 model Account {
@@ -55,8 +55,6 @@ model Tenant {
   name        String?
   createdAt   DateTime     @default(now()) @map(name: "created_at")
   updatedAt   DateTime     @updatedAt @map(name: "updated_at")
-  smtpConfigs SmtpConfig[]
-  ApiKeys     ApiKey[]
 
   @@map(name: "tenants")
 }
@@ -69,7 +67,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  role          UserRole  @default(ADMIN)
+  role          UserRole  @default(STUDENT)
 
   isActive  Boolean @default(true)
   tenant_id String  @default(cuid())
@@ -94,54 +92,110 @@ model VerificationToken {
   @@map(name: "verification_tokens")
 }
 
-// Freesend
+// university
 
-//(status    String) to be implemented
-model SmtpConfig {
-  id        String   @id @default(nanoid(10))
-  tenant_id String
-  name      String   @unique
-  host      String
-  port      Int
-  security  String
-  user      String
-  pass      String
-  tenant    Tenant   @relation(fields: [tenant_id], references: [id])
-  apiKeys   ApiKey[]
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-
-  @@index([tenant_id], name: "smtpconfig_tenant_id_idx")
-  @@map(name: "smtp_configs")
+model course {
+  courseid                  Int                         @id @default(autoincrement())
+  coursename                String                      @db.VarChar(45)
+  credits                   Int                         @db.SmallInt
+  hours                     Int                         @db.SmallInt
+  description               String                      @db.VarChar(45)
+  departmentid              Int
+  no_of_classes             Int                         @db.SmallInt
+  no_of_seats               Int                         @db.SmallInt
+  department                department                  @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_departmentid_course")
+  gradereport               gradereport[]
+  student_registers_courses student_registers_courses[]
 }
 
-model ApiKey {
-  id           String     @id @default(nanoid(10))
-  tenant_id    String
-  smtpConfigId String
-  name         String
-  token        String     @unique
-  status       String     @default("inactive")
-  tenant       Tenant     @relation(fields: [tenant_id], references: [id])
-  smtpConfig   SmtpConfig @relation(fields: [smtpConfigId], references: [id])
-
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-  Emails    Emails[]
-
-  @@map(name: "api_keys")
+model department {
+  departmentid    Int              @id @default(autoincrement())
+  departmentname  String           @db.VarChar(45)
+  description     String           @db.VarChar(45)
+  budget          Decimal          @db.Decimal(45, 0)
+  officeno        String           @db.VarChar(15)
+  course          course[]
+  employee        employee[]
+  majordepartment majordepartment?
+  minordepartment minordepartment?
+  student         student[]
 }
 
-model Emails {
-  id        String   @id @default(nanoid(10))
-  apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id])
-  from      String
-  to        String
-  subject   String
-  text_body String
-  html_body String
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  apiKeyId  String
+model employee {
+  employeeid             Int                      @id @default(autoincrement())
+  firstname              String                   @db.VarChar(45)
+  lastname               String                   @db.VarChar(45)
+  middlename             String?                  @db.VarChar(45)
+  contactno              String                   @db.VarChar(15)
+  address                String                   @db.VarChar(45)
+  hiringdate             DateTime                 @db.Date
+  ssn                    String                   @db.VarChar(9)
+  departmentid           Int
+  department             department               @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_departmentid_employee")
+  employee_salarydetails employee_salarydetails[]
+}
 
-  @@map(name: "emails")
+model employee_salarydetails {
+  accountid    Int
+  date_on_bill DateTime @db.Date
+  employeeid   Int
+  accountname  String   @db.VarChar(45)
+  salary       Float
+  deductions   Float
+  tax          Float
+  employee     employee @relation(fields: [employeeid], references: [employeeid], onDelete: NoAction, onUpdate: NoAction, map: "fk_employeeid_salary")
+
+  @@id([accountid, date_on_bill])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model gradereport {
+  reportid     Int     @id @default(autoincrement())
+  courseid     Int
+  studentid    Int
+  attempt      Int     @default(1) @db.SmallInt
+  lettergrade  String  @db.VarChar(2)
+  numericgrade Float
+  semester     String  @db.VarChar(45)
+  year         Int
+  course       course  @relation(fields: [courseid], references: [courseid], onDelete: NoAction, onUpdate: NoAction, map: "fk_courseid_report")
+  student      student @relation(fields: [studentid], references: [studentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_studentid_report")
+}
+
+model majordepartment {
+  majorid    Int        @id
+  department department @relation(fields: [majorid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_majorid")
+}
+
+model minordepartment {
+  minorid    Int        @id
+  department department @relation(fields: [minorid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_minorid")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model student {
+  studentid                 Int                         @id @default(autoincrement())
+  firstname                 String                      @db.VarChar(45)
+  middlename                String?                     @db.VarChar(45)
+  lastname                  String                      @db.VarChar(45)
+  ssn                       String?                     @db.VarChar(9)
+  dob                       DateTime                    @db.Date
+  currentaddress            String                      @db.VarChar(45)
+  sex                       String                      @db.VarChar(6)
+  currentphoneno            String                      @db.VarChar(15)
+  email                     String                      @db.VarChar(45)
+  departmentid              Int
+  gradereport               gradereport[]
+  department                department                  @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_departmentid_student")
+  student_registers_courses student_registers_courses[]
+}
+
+model student_registers_courses {
+  studentid        Int
+  courseid         Int
+  registrationdate DateTime @db.Date
+  course           course   @relation(fields: [courseid], references: [courseid], onDelete: NoAction, onUpdate: NoAction, map: "fk_student_has_course_course1")
+  student          student  @relation(fields: [studentid], references: [studentid], onDelete: NoAction, onUpdate: NoAction, map: "fk_student_has_course_student1")
+
+  @@id([studentid, courseid, registrationdate])
 }
