@@ -32,7 +32,9 @@ export const getAllUsers = async (): Promise<User[]> => {
     if (user.role != "ADMIN") {
       throw new Error("You are not an admin.");
     }
-    const userList: User[] = await prisma.$queryRaw`SELECT * FROM users`;
+    const tenant_id = user.tenant_id;
+    const userList: User[] =
+      await prisma.$queryRaw`SELECT * FROM users WHERE tenant_id=${tenant_id}`;
     return userList;
   } catch {
     return [];
