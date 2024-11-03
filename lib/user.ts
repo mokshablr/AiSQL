@@ -249,7 +249,7 @@ export async function updateUser(editedRecords) {
 
       var role = row[6];
       if (!role) {
-        role = UserRole.USER;
+        role = UserRole.STUDENT;
       }
 
       var active = false;

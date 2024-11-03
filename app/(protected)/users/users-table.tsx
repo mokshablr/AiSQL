@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { UserRole } from "@prisma/client";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
-import { getAllUsers } from "@/lib/admin";
+import { getAllUsers, updateUserRole } from "@/lib/admin";
 import { deleteServer, updateMailServer } from "@/lib/smtp-config";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
@@ -15,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// import UpdateApiKeyDialog from "./update-user-dialog";
+import UpdateUserDialog from "./update-user-dialog";
 
 interface MailServer {
   id: string;
@@ -25,11 +26,12 @@ interface MailServer {
   user: string;
   security: string;
 }
-interface User {
+
+interface SqlUser {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
 }
 
 interface MailServerTableProps {
@@ -42,13 +44,13 @@ const UserTable: React.FC = () => {
     id: "",
     name: "",
     email: "",
-    role: "",
+    role: UserRole.STUDENT,
   };
 
-  const [users, setUsers] = useState<User[]>();
+  const [users, setUsers] = useState<SqlUser[]>([emptyUser]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateDialogOpen, setUpdateDialogOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<User>(emptyUser);
+  const [selectedUser, setSelectedUser] = useState<SqlUser>(emptyUser);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -74,29 +76,19 @@ const UserTable: React.FC = () => {
     }
   };
 
-  const handleUpdate = async (
-    id: string,
-    updateData: {
-      name: string;
-      host: string;
-      port: number;
-      security: string;
-    },
-  ) => {
+  const handleUpdate = async (id: string, role: UserRole) => {
     try {
-      await updateMailServer(id, updateData);
-      // setMailServers((prevKeys) =>
-      //   prevKeys.map((key) =>
-      //     key.id === id ? { ...key, ...updateData } : key,
-      //   ),
-      // );
+      await updateUserRole(id, role);
+      setUsers((prevKeys) =>
+        prevKeys.map((key) => (key.id === id ? { ...key } : key)),
+      );
       toast.success("Mail server configuration has been updated.");
     } catch (error) {
       toast.error("Error updating mail server: " + error);
     }
   };
 
-  const openUpdateDialog = (user: User) => {
+  const openUpdateDialog = (user: SqlUser) => {
     setSelectedUser(user);
     // setSelectedMailServer(mailServer);
     setUpdateDialogOpen(true);
@@ -107,7 +99,7 @@ const UserTable: React.FC = () => {
       id: "",
       name: "",
       email: "",
-      role: "",
+      role: UserRole.STUDENT,
     });
     setUpdateDialogOpen(false);
   };
@@ -151,13 +143,13 @@ const UserTable: React.FC = () => {
   return (
     <>
       <DataTable columns={columns} data={users} isLoading={isLoading} />
-      {/* <UpdateApiKeyDialog
+      <UpdateUserDialog
         initialIsOpen={updateDialogOpen}
         onClose={closeUpdateDialog}
-        selectedMailServerId={selectedMailServer.id}
-        initialData={selectedMailServer || empty_mailServer}
+        selectedUserId={selectedUser.id}
+        initialData={selectedUser || emptyUser}
         onUpdate={handleUpdate}
-      /> */}
+      />
     </>
   );
 };

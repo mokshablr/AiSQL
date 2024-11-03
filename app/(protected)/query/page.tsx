@@ -17,30 +17,12 @@ import { Icons } from "@/components/shared/icons";
 export default function Emails() {
   return (
     <>
-      <title>Emails</title>
+      <title>Talk to your Data</title>
       <div>
         <h1 className="text-slate-12 text-[28px] font-bold leading-[34px] tracking-[-0.416px]">
-          Emails
+          Query your database
         </h1>
       </div>
-      <div className="relative flex">
-        <Input
-          type="text"
-          placeholder="Search..."
-          className="relative bg-muted/50 pl-2 text-sm font-normal text-muted-foreground sm:pr-12 md:w-72"
-        />
-        <Button
-          id="search"
-          type="submit"
-          variant={"secondary"}
-          className="ml-2"
-        >
-          <>
-            <Icons.search className="size-4" /> <span>Search</span>
-          </>
-        </Button>
-      </div>
-      TODO
     </>
   );
 }

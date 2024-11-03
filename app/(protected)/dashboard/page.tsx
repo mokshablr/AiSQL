@@ -3,6 +3,7 @@ import { UserRole } from "@prisma/client";
 
 import { getCurrentUser } from "@/lib/session";
 import { constructMetadata } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 export const metadata = constructMetadata({
   title: "Dashboard",
@@ -19,7 +20,9 @@ export default async function DashboardPage() {
   }
   return (
     <>
-      <div>TODO: Make emails sent metrics, etc</div>
+      <div>
+        <Input />
+      </div>
     </>
   );
 }

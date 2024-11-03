@@ -11,7 +11,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
 }
 
 export const getUserById = async (id: string) => {
@@ -48,6 +48,16 @@ export const getTenantID = async () => {
       throw new Error("Unauthorized");
     }
     return user.tenant_id;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const updateUserRole = async (userId: string, updateRole: UserRole) => {
+  try {
+    await prisma.$queryRaw`UPDATE users SET role=${updateRole} WHERE id=${userId}`;
+    const updatedUsers = await getAllUsers();
+    return updatedUsers;
   } catch (error) {
     throw new Error(error);
   }

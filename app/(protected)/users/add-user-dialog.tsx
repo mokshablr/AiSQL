@@ -21,6 +21,19 @@ export default function AddUserDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [tenantId, setTenantId] = useState<string>();
 
+  useEffect(() => {
+    const fetchInviteID = async () => {
+      try {
+        const tenant_id = await getTenantID();
+        setTenantId(tenant_id);
+      } catch (error) {
+        toast.error("Error fetching mail servers: " + error.message);
+      }
+    };
+
+    fetchInviteID();
+  }, []);
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -40,7 +53,7 @@ export default function AddUserDialog() {
                 <Input
                   readOnly
                   value={tenantId}
-                  className="bg-secondary text-muted-foreground"
+                  className="bg-secondary text-muted-foreground focus:outline-none"
                 />
               </div>
               <div className="pt-3 text-center text-sm">
