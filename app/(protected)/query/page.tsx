@@ -1,3 +1,42 @@
+// "use client";
+
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { useForm } from "react-hook-form";
+// import { z } from "zod";
+
+// import { AiChat, queryOllamaModel } from "@/lib/ai-query";
+// import { Button } from "@/components/ui/button";
+// import {
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+// import { Icons } from "@/components/shared/icons";
+
+// export default function Emails() {
+//   // Example usage
+//   queryOllamaModel("What is the capital of France?")
+//     .then((response) => {
+//       console.log("Model response:", response);
+//     })
+//     .catch((error) => {
+//       console.error("Error querying model:", error.message);
+//     });
+
+//   return (
+//     <>
+//       <title>Talk to your Data</title>
+//       <div>
+//         <h1 className="text-slate-12 text-[28px] font-bold leading-[34px] tracking-[-0.416px]">
+//           Query your database
+//         </h1>
+//       </div>
+//     </>
+//   );
+// }
+
 "use client";
 
 import React, { useState } from "react";
