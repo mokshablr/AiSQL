@@ -50,21 +50,8 @@ export function NavBar({ scroll = false }: NavBarProps) {
       >
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-1.5">
-            <span className="font-urban text-xl font-bold">
-              <Image
-                alt="Freesend"
-                src="/freesend-logo-black.png"
-                width={90}
-                height={31}
-                className="block dark:hidden"
-              />
-              <Image
-                alt="Freesend"
-                src="/freesend-logo-white.png"
-                width={90}
-                height={31}
-                className="hidden dark:block"
-              />
+            <span className="text-xl font-bold text-gray-800 dark:text-white">
+              AI-SQL
             </span>
           </Link>
 
