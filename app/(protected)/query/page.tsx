@@ -77,7 +77,7 @@ const QueryPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-black text-white">
+    <div className="flex min-h-screen flex-col items-center text-white">
       <main className="w-full max-w-3xl flex-1 px-4 py-12 md:px-6 md:py-24 lg:py-32">
         <div className="container mx-auto">
           {!response && (
@@ -141,7 +141,7 @@ const QueryPage = () => {
       </main>
 
       {/* Input form at the bottom */}
-      <div className="fixed bottom-0 w-full max-w-3xl bg-black px-4 py-4">
+      <div className="fixed bottom-0 w-full max-w-3xl px-4 py-4">
         <form
           onSubmit={handleQuerySubmit}
           className="flex w-full items-center space-x-2"

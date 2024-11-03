@@ -6,9 +6,8 @@ export const sidebarLinks: SidebarNavItem[] = [
   {
     title: "MENU",
     items: [
-      { href: "/", icon: "home", title: "home" },
+      { href: "/dashboard", icon: "messages", title: "Join Org" },
       { href: "/query", icon: "mail", title: "Query" },
-      { href: "/api-keys", icon: "lock", title: "Tenent" },
     ],
   },
   {
