@@ -163,31 +163,6 @@ export default function AIDataPage() {
           </div>
         </section>
       </main>
-      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
-        <Image
-          alt="AI Database Logo"
-          src="/ai-database-logo.png"
-          width={90}
-          height={31}
-          className="block dark:hidden"
-        />
-        <Image
-          alt="AI Database Logo"
-          src="/ai-database-logo-dark.png"
-          width={90}
-          height={31}
-          className="hidden dark:block"
-        />
-        <nav className="flex gap-4 sm:ml-auto sm:gap-6">
-          <Link
-            className="inline-flex items-center text-xs underline-offset-4 hover:underline"
-            href="https://www.google.com/search?q=your+mom&oq=your+mom&gs_lcrp=EgZjaHJvbWUqDQgAEAAY4wIYsQMYgAQyDQgAEAAY4wIYsQMYgAQyCggBEC4YsQMYgAQyBwgCEC4YgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEC4YgAQyBwgIEAAYgAQyBwgJEAAYgATSAQkxMDE1MGowajSoAgiwAgE&sourceid=chrome&ie=UTF-8"
-          >
-            <Icons.google className="mr-1 h-4 w-4" />
-            click
-          </Link>
-        </nav>
-      </footer>
     </div>
   );
 }

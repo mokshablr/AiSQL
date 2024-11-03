@@ -203,15 +203,15 @@ export function MobileSheetSidebar({ links }: DashboardSidebarProps) {
                 <div className="flex items-center gap-2 text-lg font-semibold">
                   <Link href="/">
                     <Image
-                      alt="Freesend"
-                      src="/freesend-logo-black.png"
+                      alt="AI-SQL"
+                      src="/DB-logo.png"
                       width={70}
                       height={25}
                       className="block dark:hidden"
                     />
                     <Image
-                      alt="Freesend"
-                      src="/freesend-logo-white.png"
+                      alt="AI-SQL"
+                      src="/DB-logo.png"
                       width={70}
                       height={25}
                       className="hidden dark:block"
