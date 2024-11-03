@@ -31,14 +31,14 @@ export default function LoginPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col items-center space-y-2 text-center">
           <Image
-            alt="Freesend"
-            src="/freesend-icon.png"
+            alt="Ai-sql"
+            src="/DB-logo.png"
             width={40}
             height={40}
             className="m-4"
           />
           <h1 className="text-2xl font-semibold tracking-tight">
-            Welcome to Freesend
+            Welcome to AI-SQL
           </h1>
           {
             <p className="text-sm text-muted-foreground">

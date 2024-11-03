@@ -105,3 +105,33 @@
 .ht_clone_bottom_left_corner {
   z-index: 0 !important;
 }
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+.typing-animation {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  width: 100%; /* Full width to keep text visible */
+  animation:
+    typing 3s steps(30, end) forwards,
+    blink 0.7s step-end infinite;
+}

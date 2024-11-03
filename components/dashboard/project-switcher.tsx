@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import Image from "next/image";
-
 
 type ProjectType = {
   title: string;
@@ -43,10 +42,12 @@ export default function ProjectSwitcher({
   }
 
   return (
-    <span className="hidden text-xl font-bold sm:inline-block tracking-widest">
-      <a href="/">
-        <Image alt="Freesend" src="/freesend-logo-black.png" width={80} height={25} className="block dark:hidden" />
-        <Image alt="Freesend" src="/freesend-logo-white.png" width={80} height={25} className="hidden dark:block" />
+    <span className="hidden text-xl font-bold tracking-widest sm:inline-block">
+      <a href="/" className="block dark:hidden">
+        AI_SQL
+      </a>
+      <a href="/" className="hidden dark:block">
+        AI_SQL
       </a>
     </span>
   );
@@ -121,10 +122,11 @@ function ProjectList({
         >
           <div className={cn("size-3 shrink-0 rounded-full", color)} />
           <span
-            className={`flex-1 truncate text-sm ${selected.slug === slug
-              ? "font-medium text-foreground"
-              : "font-normal"
-              }`}
+            className={`flex-1 truncate text-sm ${
+              selected.slug === slug
+                ? "font-medium text-foreground"
+                : "font-normal"
+            }`}
           >
             {slug}
           </span>
