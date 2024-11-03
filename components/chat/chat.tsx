@@ -162,59 +162,6 @@ export default function AIDataPage() {
             </div>
           </div>
         </section>
-
-        {/* Output Table */}
-        {/* Query Results Section */}
-        <section className="w-full bg-gray-100 py-12 dark:bg-zinc-800 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Query Results
-              </h2>
-              <p className="max-w-[900px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                View and analyze data directly from your query output.
-              </p>
-            </div>
-            <div className="mx-auto max-w-5xl overflow-x-auto py-8">
-              {queryResult.length > 0 ? (
-                <table className="w-full table-auto border-collapse border border-gray-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
-                  <thead>
-                    <tr className="bg-gray-100 text-left dark:bg-zinc-800">
-                      {/* Generate table headers from keys */}
-                      {Object.keys(queryResult[0]).map((key) => (
-                        <th
-                          key={key}
-                          className="border border-gray-200 px-4 py-2 dark:border-zinc-700"
-                        >
-                          {key}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* Generate table rows */}
-                    {queryResult.map((row, index) => (
-                      <tr key={index}>
-                        {Object.values(row).map((value, idx) => (
-                          <td
-                            key={idx}
-                            className="border border-gray-200 px-4 py-2 dark:border-zinc-700"
-                          >
-                            {value}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p className="text-gray-500 dark:text-gray-400">
-                  No data to display.
-                </p>
-              )}
-            </div>
-          </div>
-        </section>
       </main>
       <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
         <Image
