@@ -3,7 +3,7 @@ import { UserRole } from "@prisma/client";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
-import { getAllUsers, updateUserRole } from "@/lib/admin";
+import { getAllUsers, removeUser, updateUserRole } from "@/lib/admin";
 import { deleteServer, updateMailServer } from "@/lib/smtp-config";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
@@ -18,25 +18,11 @@ import {
 
 import UpdateUserDialog from "./update-user-dialog";
 
-interface MailServer {
-  id: string;
-  name: string;
-  host: string;
-  port: number;
-  user: string;
-  security: string;
-}
-
 interface SqlUser {
   id: string;
   name: string;
   email: string;
   role: UserRole;
-}
-
-interface MailServerTableProps {
-  initialMailServers: MailServer[];
-  initialIsLoading: boolean;
 }
 
 const UserTable: React.FC = () => {
@@ -58,7 +44,7 @@ const UserTable: React.FC = () => {
         const allUsers = await getAllUsers();
         setUsers(allUsers);
       } catch (error) {
-        toast.error("Error fetching mail servers: " + error.message);
+        toast.error("Error fetching users: " + error.message);
       }
     };
 
@@ -68,11 +54,12 @@ const UserTable: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteServer(id);
+      await removeUser(id);
       // setMailServers((prevKeys) => prevKeys.filter((key) => key.id !== id));
-      toast.success("API Key has been deleted.");
+      setUsers((prevKeys) => prevKeys.filter((key) => key.id !== id));
+      toast.success("User has been removed from your organisation.");
     } catch (error) {
-      toast.error("Error deleting API Key: " + error);
+      toast.error("Error removing User: " + error);
     }
   };
 
@@ -80,11 +67,11 @@ const UserTable: React.FC = () => {
     try {
       await updateUserRole(id, role);
       setUsers((prevKeys) =>
-        prevKeys.map((key) => (key.id === id ? { ...key } : key)),
+        prevKeys.map((key) => (key.id === id ? { ...key, role } : key)),
       );
-      toast.success("Mail server configuration has been updated.");
+      toast.success("User role has been updated.");
     } catch (error) {
-      toast.error("Error updating mail server: " + error);
+      toast.error("Error updating user role: " + error);
     }
   };
 
@@ -131,7 +118,7 @@ const UserTable: React.FC = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleDelete(mailServer.id)}>
                 <Trash className="mr-2 h-4 w-4" />
-                Delete
+                Remove
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

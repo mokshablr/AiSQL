@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { UserRole } from "@prisma/client";
+import cuid from "cuid";
 
 import { prisma } from "@/lib/db";
 // import { sendInviteEmail } from "@/lib/email";
@@ -56,10 +57,52 @@ export const getTenantID = async () => {
 
 export const updateUserRole = async (userId: string, updateRole: UserRole) => {
   try {
-    await prisma.$queryRaw`UPDATE users SET role=${updateRole} WHERE id=${userId}`;
+    // Use a parameterized query to safely set the role
+    const response = await prisma.$executeRaw`
+      UPDATE users SET role = ${updateRole}::"UserRole" WHERE id = ${userId}
+    `;
+
+    // Optionally check if any rows were affected
+    if (response === 0) {
+      throw new Error(
+        "No user found with the provided ID or role update failed.",
+      );
+    }
+
+    // Get the updated list of users after the role change
     const updatedUsers = await getAllUsers();
     return updatedUsers;
   } catch (error) {
-    throw new Error(error);
+    console.error("Error updating user role:", error);
+    throw new Error(
+      `Failed to update user role: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+};
+export const removeUser = async (userID: string) => {
+  try {
+    // Generate a new CUID for tenant_id
+    const newTenantId = cuid(); // Replace with your CUID generation method if different
+
+    // Use a raw query to update the user's tenant_id
+    const response = await prisma.$executeRaw`
+      UPDATE users 
+      SET tenant_id = ${newTenantId}, role='ADMIN'::"UserRole"
+      WHERE id = ${userID}
+    `;
+
+    // Optionally check if any rows were affected
+    if (response === 0) {
+      throw new Error(
+        "No user found with the provided ID or tenant ID update failed.",
+      );
+    }
+
+    return { userId: userID, newTenantId }; // Return updated information as needed
+  } catch (error) {
+    console.error("Error updating user's tenant_id:", error);
+    throw new Error(
+      `Failed to update user's tenant_id: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 };

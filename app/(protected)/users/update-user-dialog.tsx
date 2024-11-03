@@ -55,14 +55,14 @@ export default function UpdateUserDialog({
 
     try {
       if (!selectedUserId) {
-        toast.error("Could not specfied user details");
+        toast.error("Could not find specfied user details");
       } else {
         await onUpdate(selectedUserId, role);
         setIsOpen(false);
         onClose();
       }
     } catch (error) {
-      toast.error("Error updating API Key: " + error);
+      toast.error("Error updating User: " + error);
     }
   };
 
