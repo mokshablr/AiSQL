@@ -51,11 +51,6 @@ type OllamaResponse = {
   query: string;
 };
 
-type NeonResponseItem = {
-  lettergrade: string;
-  numericgrade: number;
-};
-
 const QueryPage = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
@@ -70,10 +65,24 @@ const QueryPage = () => {
   const handleQuerySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Sample data for demonstration purposes; replace with actual API response handling
-    setResponse("Sample Response"); // Replace with actual response text
-    setResults([{ lettergrade: "A", numericgrade: 8, hello: "aah" }]); // Sample data for demonstration
-    setSummary("This is a summary of the AI's intent."); // Sample summary text
-    setSqlQuery("SELECT * FROM grades WHERE lettergrade = 'A';"); // Sample SQL query text
+    // setResponse("Sample Response"); // Replace with actual response text
+    // setResults([{ lettergrade: "A", numericgrade: 8, hello: "aah" }]); // Sample data for demonstration
+    // setSummary("This is a summary of the AI's intent."); // Sample summary text
+    // setSqlQuery("SELECT * FROM grades WHERE lettergrade = 'A';"); // Sample SQL query text
+    try {
+      const result = await chatWithOllama(prompt);
+      const jsonResult: OllamaResponse = JSON.parse(result);
+      const sqlQuery = jsonResult.query;
+      setSqlQuery(sqlQuery);
+      const neon_response = await queryNeonDB(sqlQuery);
+      console.log("RESP", neon_response);
+      const summary = jsonResult.summary;
+      setSummary(summary);
+      setResponse(summary);
+      setResults(neon_response as any[]);
+    } catch (error) {
+      console.error("Error querying model:", (error as Error).message);
+    }
   };
 
   return (

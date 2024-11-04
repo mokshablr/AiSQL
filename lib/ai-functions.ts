@@ -25,7 +25,7 @@ Do not use MySQL syntax.
 Always limit the SQL Query to 100 rows.
 Always include all of the table columns and details.
 Do not add any details that are not specified by the prompt.
-Use the exact names from the schema.
+Use the exact names from the schema even the underscores.
 `;
 
 export async function chatWithOllama(prompt: string): Promise<string> {
