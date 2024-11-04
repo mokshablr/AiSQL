@@ -20,12 +20,15 @@ Always provide your answer in the JSON format below:
 { ""summary"": ""your-summary"", ""query"":  ""your-query"" }
 Output ONLY JSON formatted on a single line. Do not use new line characters.
 In the preceding JSON response, substitute ""your-query"" with PostgresSQL Query to retrieve the requested data.
-In the preceding JSON response, substitute ""your-summary"" with a summary of the query.
+In the preceding JSON response, substitute ""your-summary"" with a summary of the reasoning behind the query you generated explaining the joins or other operations.
 Do not use MySQL syntax.
 Always limit the SQL Query to 100 rows.
 Always include all of the table columns and details.
 Do not add any details that are not specified by the prompt.
-Use the exact names from the schema even the underscores.
+IMPORTANT: Use the exact names from the schema even the underscores.
+IMPORTANT: Do not use unrelated tables while creating the query.
+Do not create multiple SQL queries in a single output.
+IMPORTANT: Always strictly refer to the schema when generating the SQL.
 `;
 
 export async function chatWithOllama(prompt: string): Promise<string> {

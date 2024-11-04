@@ -1,42 +1,3 @@
-// "use client";
-
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
-// import { z } from "zod";
-
-// import { AiChat, queryOllamaModel } from "@/lib/ai-query";
-// import { Button } from "@/components/ui/button";
-// import {
-//   FormControl,
-//   FormField,
-//   FormItem,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// import { Icons } from "@/components/shared/icons";
-
-// export default function Emails() {
-//   // Example usage
-//   queryOllamaModel("What is the capital of France?")
-//     .then((response) => {
-//       console.log("Model response:", response);
-//     })
-//     .catch((error) => {
-//       console.error("Error querying model:", error.message);
-//     });
-
-//   return (
-//     <>
-//       <title>Talk to your Data</title>
-//       <div>
-//         <h1 className="text-slate-12 text-[28px] font-bold leading-[34px] tracking-[-0.416px]">
-//           Query your database
-//         </h1>
-//       </div>
-//     </>
-//   );
-// }
-
 "use client";
 
 import React, { useState } from "react";
@@ -84,6 +45,26 @@ const QueryPage = () => {
       console.error("Error querying model:", (error as Error).message);
     }
   };
+  const downloadCSV = () => {
+    if (results.length === 0) return;
+
+    const headers = Object.keys(results[0]).join(",");
+    const rows = results.map((row) =>
+      Object.values(row)
+        .map((value) => `"${value}"`)
+        .join(","),
+    );
+    const csvContent = [headers, ...rows].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "query_results.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center text-white">
@@ -102,48 +83,52 @@ const QueryPage = () => {
           )}
 
           {response && (
-            <div className="text-center">
-              {/* AI Summary and SQL Query Display */}
-              <div className="mb-6 mt-8 rounded-lg bg-gray-800 p-4 shadow-md">
-                <h2 className="text-lg font-bold text-blue-400">AI Summary:</h2>
-                <p className="mb-2 text-gray-300">{summary}</p>
-                <h3 className="text-lg font-bold text-blue-400">SQL Query:</h3>
-                <pre className="overflow-auto rounded bg-gray-900 p-3 text-gray-100">
-                  {sqlQuery}
-                </pre>
-              </div>
-
-              {/* Results Table */}
+            <div className="mt-8 text-center">
               <h2 className="mb-4 text-2xl font-bold">Results</h2>
-              <table className="w-full border-collapse text-left">
-                <thead>
-                  <tr>
-                    {Object.keys(results[0] || {}).map((header, index) => (
-                      <th
-                        key={index}
-                        className="border-b border-gray-600 px-4 py-2 text-gray-400"
-                      >
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {results.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {Object.values(row).map((cell, cellIndex) => (
-                        <td
-                          key={cellIndex}
-                          className="border-b border-gray-600 px-4 py-2"
+              <div className="mb-4 rounded-lg bg-gray-800 p-4 text-left">
+                <p>
+                  <strong>SQL Query:</strong> {sqlQuery}
+                </p>
+                <p>
+                  <strong>Summary:</strong> {summary}
+                </p>
+              </div>
+              <div className="w-full overflow-x-auto">
+                <table className="min-w-full border-collapse text-left">
+                  <thead>
+                    <tr>
+                      {Object.keys(results[0] || {}).map((header, index) => (
+                        <th
+                          key={index}
+                          className="border-b border-gray-600 px-4 py-2 text-gray-400"
                         >
-                          {String(cell)}
-                        </td>
+                          {header}
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="mt-4 text-lg">{response}</p>
+                  </thead>
+                  <tbody>
+                    {results.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {Object.values(row).map((cell, cellIndex) => (
+                          <td
+                            key={cellIndex}
+                            className="border-b border-gray-600 px-4 py-2"
+                          >
+                            {String(cell)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Button
+                onClick={downloadCSV}
+                className="text-md mt-4 font-semibold"
+              >
+                Download CSV
+              </Button>
             </div>
           )}
         </div>

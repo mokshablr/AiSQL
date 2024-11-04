@@ -1,0 +1,23 @@
+Create operation:
+create a new student in the student table with studentid=70 firstname=Anish middlename=M lastname=M ssn=PESST070 dob="2004-06-01" currentaddress="anish house" sex="Male" currentphoneno=1234543210 email=anish@gmail.com departmentid=1
+
+Read:
+show me the details of employee with firstname="Shilpa"
+
+Update:
+update the credits of the course Software Engineering to 3
+
+Delete:
+delete the student with firstname="Anish"
+
+Aggregate:
+how many students are there in the student table
+
+Join:
+what grade did the student with studentid=95 get in the course="Software Engineering"
+
+Download:
+show me all the students in the student table
+
+Trigger:
+When a user is not an ADMIN, they cannot view the Users and edit their roles in the organisaiton 
