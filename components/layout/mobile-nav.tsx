@@ -6,11 +6,8 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 
-import { docsConfig } from "@/config/docs";
-import { marketingConfig } from "@/config/marketing";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { DocsSidebarNav } from "@/components/docs/sidebar-nav";
 import { Icons } from "@/components/shared/icons";
 
 import { ModeToggle } from "./mode-toggle";
@@ -22,11 +19,11 @@ export function NavMobile() {
   const documentation = selectedLayout === "docs";
 
   const configMap = {
-    docs: docsConfig.mainNav,
+    docs: siteConfig.mainNav,
   };
 
   const links =
-    (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
+    (selectedLayout && configMap[selectedLayout]) || siteConfig.mainNav;
 
   // prevent body scroll when modal is open
   useEffect(() => {
@@ -101,7 +98,7 @@ export function NavMobile() {
 
         {documentation ? (
           <div className="mt-8 block md:hidden">
-            <DocsSidebarNav setOpen={setOpen} />
+            {/* DocsSidebarNav removed */}
           </div>
         ) : null}
 

@@ -4,14 +4,14 @@ import { env } from "@/env.mjs";
 const site_url = env.NEXT_PUBLIC_APP_URL;
 
 export const siteConfig: SiteConfig = {
-  name: "Freesend",
+  name: "AiSQL",
   description:
-    "Freesend empowers you to send emails your way by allowing seamless integration with your own mail servers. Experience personalized and efficient communication with Freesend.",
+    "AiSQL lets you chat with your database using natural language. Instantly generate SQL, get insights, and manage your data with AI-powered ease.",
   url: site_url,
   ogImage: `${site_url}/_static/og.jpg`,
   links: {
     twitter: "",
-    github: "https://www.github.com/mokshablr/freesend",
+    github: "https://github.com/your-org/aisql", // Update to your actual repo
   },
   mailSupport: "",
 };
