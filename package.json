@@ -1,5 +1,6 @@
 {
-  "name": "freesend",
+  "name": "aisql",
+  "description": "AiSQL: Chat with your database using AI. Natural language to SQL for instant insights.",
   "version": "0.3.1",
   "private": true,
   "author": {

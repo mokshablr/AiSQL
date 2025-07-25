@@ -153,15 +153,15 @@ export default function Component() {
       </main>
       <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
         <Image
-          alt="Freesend"
-          src="/freesend-logo-black.png"
+          alt="AiSQL"
+          src="/aisql-logo-black.png"
           width={90}
           height={31}
           className="block dark:hidden"
         />
         <Image
-          alt="Freesend"
-          src="/freesend-logo-white.png"
+          alt="AiSQL"
+          src="/aisql-logo-white.png"
           width={90}
           height={31}
           className="hidden dark:block"
@@ -169,7 +169,7 @@ export default function Component() {
         <nav className="flex gap-4 sm:ml-auto sm:gap-6">
           <Link
             className="inline-flex items-center text-xs underline-offset-4 hover:underline"
-            href="https://github.com/mokshablr/Freesend"
+            href="https://github.com/mokshablr/AiSQL"
           >
             <Icons.gitHub className="mr-1 h-4 w-4" />
             GitHub

@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/session";
 import { getTenant } from "@/lib/user";
 import { constructMetadata } from "@/lib/utils";
-import { DeleteAccountSection } from "@/components/dashboard/delete-account";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { TenantNameForm } from "@/components/forms/tenant-name-form";
 import { UserNameForm } from "@/components/forms/user-name-form";
@@ -38,7 +37,6 @@ export default async function SettingsPage() {
             tenant={{ id: tenant?.id || "", name: tenant?.name || "" }}
           />
         )}
-        <DeleteAccountSection />
       </div>
     </>
   );
